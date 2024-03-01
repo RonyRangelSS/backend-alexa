@@ -19,20 +19,27 @@ import br.upe.garanhuns.alexa.model.dto.QuizDTO;
 import br.upe.garanhuns.alexa.model.entity.Quiz;
 import br.upe.garanhuns.alexa.repository.QuizRepository;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
-public class QuizController {
 
+
+public class QuizController {
+  
   @Autowired
   private QuizRepository quizRepository;
-
+  
   private static final Logger logger = LogManager.getLogger("quiz-logger");
-
-  @GetMapping("/")
-  @ResponseBody
-  String home() {
-      return "Hello, World!";
+  
+  @RequestMapping("/")
+  public String home() {
+      return "Deu certo!";
   }
+
+  
 
   @GetMapping("/quiz")
   public ResponseEntity getQuiz() {
@@ -149,8 +156,7 @@ public class QuizController {
 
     }
   }
-  @GetMapping("/favicon.ico")
-  @ResponseBody
+  @RequestMapping("/favicon.ico")
   void returnNoFavicon() {
   }
 
