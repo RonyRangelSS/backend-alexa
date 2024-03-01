@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import br.upe.garanhuns.alexa.model.dto.QuizDTO;
 import br.upe.garanhuns.alexa.model.entity.Quiz;
@@ -26,6 +27,12 @@ public class QuizController {
   private QuizRepository quizRepository;
 
   private static final Logger logger = LogManager.getLogger("quiz-logger");
+
+  @GetMapping("/")
+  @ResponseBody
+  String home() {
+      return "Hello, World!";
+  }
 
   @GetMapping("/quiz")
   public ResponseEntity getQuiz() {
@@ -141,6 +148,10 @@ public class QuizController {
       return ResponseEntity.status(401).build();
 
     }
+  }
+  @GetMapping("/favicon.ico")
+  @ResponseBody
+  void returnNoFavicon() {
   }
 
 }
