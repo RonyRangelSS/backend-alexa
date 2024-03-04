@@ -15,12 +15,14 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Table(name = "usuarios")
 @Entity(name = "usuarios")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 public class Usuario implements UserDetails {
 
   @Id
