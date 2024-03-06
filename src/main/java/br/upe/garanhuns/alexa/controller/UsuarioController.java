@@ -1,15 +1,10 @@
 package br.upe.garanhuns.alexa.controller;
 
-import java.util.List;
-import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,37 +12,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import br.upe.garanhuns.alexa.model.auxiliary.CadastroEntidade;
+import br.upe.garanhuns.alexa.model.auxiliary.CartoesRapidosException;
+import br.upe.garanhuns.alexa.model.auxiliary.MensagensErro;
 import br.upe.garanhuns.alexa.model.dto.AuthUsuarioDTO;
+import br.upe.garanhuns.alexa.model.dto.ErroDTO;
 import br.upe.garanhuns.alexa.model.dto.LoginDTO;
 import br.upe.garanhuns.alexa.model.dto.UsuarioDTO;
 import br.upe.garanhuns.alexa.model.entity.Usuario;
-import br.upe.garanhuns.alexa.model.service.TokenService;
-import br.upe.garanhuns.alexa.repository.UsuarioRepository;
+import br.upe.garanhuns.alexa.model.service.UsuarioService;
 import jakarta.validation.Valid;
 
 @RestController
 public class UsuarioController {
 
   @Autowired
-  private UsuarioRepository usuarioRepository;
+  private UsuarioService usuarioService;
 
-  @Autowired
-  private AuthenticationManager authManager;
-
-  @Autowired
-  private TokenService tokenService;
-
-  private static final Logger logger = LogManager.getLogger("usuario-logger");
+  private static final Logger logger = LogManager.getLogger("usuario-controller");
 
   @GetMapping("/usuarios")
   public ResponseEntity getUsuarios() {
 
     try {
-      List<Usuario> usuarios = usuarioRepository.findAll();
-      return ResponseEntity.ok(usuarios);
+      return ResponseEntity.status(HttpStatus.OK).body(usuarioService.getUsuarios());
     } catch (Exception e) {
-      logger.error(e);
-      return ResponseEntity.status(401).build();
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(this.tratarErro(e));
     }
 
   }
@@ -56,11 +46,14 @@ public class UsuarioController {
   public ResponseEntity getUsuarioPorId(@PathVariable int id) {
 
     try {
-      Optional<Usuario> usuario = usuarioRepository.findById(id);
-      return ResponseEntity.ok(usuario);
+      Usuario usuario = usuarioService.getUsuarioPorId(id);
+      if (usuario == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(this.tratarErro(MensagensErro.MSG_NAO_ENCONTRADO));
+      }
+      return ResponseEntity.status(HttpStatus.OK).body(usuarioService.getUsuarioPorId(id));
     } catch (Exception e) {
-      logger.error(e);
-      return ResponseEntity.status(401).build();
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(this.tratarErro(e));
     }
 
   }
@@ -70,30 +63,28 @@ public class UsuarioController {
   public ResponseEntity cadastrarUsuario(@RequestBody @Valid UsuarioDTO usuarioDto) {
 
     try {
-      Usuario novoUsuario = new Usuario(usuarioDto);
-      this.usuarioRepository.save(novoUsuario);
-      return ResponseEntity.ok().build();
-    } catch (Exception e) {
-      logger.error(e);
-      return ResponseEntity.status(401).build();
-    }
+      CadastroEntidade cadastro = usuarioService.cadastrarUsuario(usuarioDto);
 
+      if (cadastro == CadastroEntidade.ENTIDADE_EXISTENTE) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(this.tratarErro(MensagensErro.MSG_USUARIO_EXISTENTE));
+      }
+
+      return ResponseEntity.status(HttpStatus.CREATED).build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.tratarErro(e));
+    }
   }
 
   @PostMapping("/usuario/login")
   public ResponseEntity autenticarUsuario(@RequestBody @Valid AuthUsuarioDTO usuarioDto) {
 
     try {
-      UsernamePasswordAuthenticationToken userAuthToken =
-          new UsernamePasswordAuthenticationToken(usuarioDto.email(), usuarioDto.senha());
-      Authentication auth = this.authManager.authenticate(userAuthToken);
-      var usuario = (Usuario) auth.getPrincipal();
-      String token = tokenService.gerarToken(usuario);
+      String token = usuarioService.autenticarUsuario(usuarioDto);
 
-      return ResponseEntity.ok(new LoginDTO(token));
+      return ResponseEntity.status(HttpStatus.OK).body(new LoginDTO(token));
     } catch (Exception e) {
-      logger.error(e);
-      return ResponseEntity.status(401).build();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.tratarErro(e));
     }
 
   }
@@ -103,35 +94,37 @@ public class UsuarioController {
       @RequestBody @Valid UsuarioDTO usuarioDto) {
 
     try {
-      Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
-      if (usuarioOpt.isEmpty()) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-            .body("Usuário de id " + id + " não foi encontrado");
-      }
-      var usuario = usuarioOpt.get();
-      usuario.setNome(usuarioDto.nome());
-      usuario.setSobrenome(usuarioDto.sobrenome());
-      return ResponseEntity.status(HttpStatus.OK).body(usuarioRepository.save(usuario));
+      Usuario usuario = this.usuarioService.atualizarUsuario(id, usuarioDto);
+      return ResponseEntity.status(HttpStatus.OK).body(usuario);
     } catch (Exception e) {
-      logger.error(e);
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.tratarErro(e));
     }
 
   }
-
 
   @DeleteMapping("/usuario/{id}")
   public ResponseEntity removerUsuario(@PathVariable int id) {
 
     try {
-      Optional<Usuario> usuario = usuarioRepository.findById(id);
-      usuarioRepository.deleteById(id);
-      return ResponseEntity.ok(usuario);
+      boolean usuarioRemovido = this.usuarioService.removerUsuario(id);
+      if (!usuarioRemovido) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(this.tratarErro(MensagensErro.MSG_ERRO_REMOCAO));
+      }
+      return ResponseEntity.status(HttpStatus.OK).build();
     } catch (Exception e) {
-      logger.error(e);
-      return ResponseEntity.status(401).build();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.tratarErro(e));
     }
+  }
 
+  public ErroDTO tratarErro(Exception e) {
+    logger.error(e.getMessage(), e);
+    return new ErroDTO(e);
+  }
+
+  public ErroDTO tratarErro(String mensagem) {
+    logger.warn(mensagem);
+    return new ErroDTO(new CartoesRapidosException(mensagem));
   }
 
 }
