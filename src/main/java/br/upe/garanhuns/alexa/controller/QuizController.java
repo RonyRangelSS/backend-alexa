@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 public class QuizController {
 
   @Autowired
-  private QuizService quizRepository;
+  private QuizService quizService;
 
   private static final Logger logger = LogManager.getLogger("quiz-controller");
 
@@ -33,7 +33,7 @@ public class QuizController {
   public ResponseEntity getAllQuiz() {
 
     try {
-      List<Quiz> quiz = quizRepository.getAllQuiz();
+      List<Quiz> quiz = quizService.getAllQuiz();
       return ResponseEntity.status(HttpStatus.OK).body(quiz);
     } catch (Exception e) {
       logger.error(e);
@@ -46,7 +46,7 @@ public class QuizController {
   public ResponseEntity getPerguntaPorId(@PathVariable int id) {
 
     try {
-      Quiz quiz = quizRepository.getPerguntaPorId(id);
+      Quiz quiz = quizService.getPerguntaPorId(id);
       if (quiz == null) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(this.tratarErro(MensagensErro.MSG_NAO_ENCONTRADO));
@@ -63,7 +63,7 @@ public class QuizController {
   public ResponseEntity getPerguntasDoUsuario(@PathVariable int id) {
 
     try {
-      List<Quiz> quiz = quizRepository.getPerguntasDoUsuario(id);
+      List<Quiz> quiz = quizService.getPerguntasDoUsuario(id);
       return ResponseEntity.status(HttpStatus.OK).body(quiz);
     } catch (Exception e) {
       logger.error(e);
@@ -76,7 +76,7 @@ public class QuizController {
   public ResponseEntity getPerguntaPeloGrupo(@PathVariable String nome, @PathVariable int id) {
 
     try {
-      List<Quiz> quiz = quizRepository.getPerguntaPeloGrupo(nome, id);
+      List<Quiz> quiz = quizService.getPerguntaPeloGrupo(nome, id);
       return ResponseEntity.status(HttpStatus.OK).body(quiz);
     } catch (Exception e) {
       logger.error(e);
@@ -101,7 +101,7 @@ public class QuizController {
       @RequestBody @Valid QuizDTO quizDto) {
 
     try {
-      Quiz quiz = this.quizRepository.atualizarPergunta(id, quizDto);
+      Quiz quiz = this.quizService.atualizarPergunta(id, quizDto);
       return ResponseEntity.status(HttpStatus.OK).body(quiz);
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.tratarErro(e));
@@ -113,7 +113,7 @@ public class QuizController {
   public ResponseEntity removerPergunta(@PathVariable int id) {
 
     try {
-      boolean perguntaRemovida = this.quizRepository.removerPergunta(id);
+      boolean perguntaRemovida = this.quizService.removerPergunta(id);
       if (!perguntaRemovida) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(this.tratarErro(MensagensErro.MSG_ERRO_REMOCAO));
