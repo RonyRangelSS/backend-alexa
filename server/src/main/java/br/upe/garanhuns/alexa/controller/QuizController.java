@@ -28,32 +28,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-<<<<<<< HEAD:src/main/java/br/upe/garanhuns/alexa/controller/QuizController.java
-=======
-@CrossOrigin(origins = "http://localhost:3000")
-public class QuizController {
->>>>>>> 0b7ea31644768db8c5c651c6d677129192aaec16:server/src/main/java/br/upe/garanhuns/alexa/controller/QuizController.java
 
 
 public class QuizController {
   
   @Autowired
-<<<<<<< HEAD:src/main/java/br/upe/garanhuns/alexa/controller/QuizController.java
-  private QuizRepository quizRepository;
-  
-  private static final Logger logger = LogManager.getLogger("quiz-logger");
-  
-  @RequestMapping("/")
-  public String home() {
-      return "Deu certo!";
-  }
-
-  
-=======
-  private QuizService quizService;
-
-  private static final Logger logger = LogManager.getLogger("quiz-controller");
->>>>>>> 0b7ea31644768db8c5c651c6d677129192aaec16:server/src/main/java/br/upe/garanhuns/alexa/controller/QuizController.java
 
   @GetMapping("/quiz")
   public ResponseEntity getAllQuiz() {
@@ -66,6 +45,14 @@ public class QuizController {
       return ResponseEntity.status(404).build();
     }
 
+  }
+  @GetMapping("/")
+  public ResponseEntity index()  {
+    return "Tá ok";
+  }
+
+  @GetMapping("/favicon.ico")
+  public ResponseEntity favicon()  {
   }
 
   @GetMapping("/quiz/{id}")

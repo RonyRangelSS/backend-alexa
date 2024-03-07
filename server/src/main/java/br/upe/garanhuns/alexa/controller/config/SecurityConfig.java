@@ -28,15 +28,8 @@ public class SecurityConfig {
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             authorize -> authorize.requestMatchers(HttpMethod.POST, "/usuario/cadastro").permitAll()
-                .requestMatchers(HttpMethod.POST, "/usuario/login").permitAll()
-<<<<<<< HEAD:src/main/java/br/upe/garanhuns/alexa/controller/config/SecurityConfig.java
-                .requestMatchers(HttpMethod.GET, "/quiz/{nome}/{id}").permitAll().anyRequest()
-                .permitAll())
-=======
-                .requestMatchers(HttpMethod.GET, "/quiz/{nome}/{id}").permitAll()
-                .requestMatchers(HttpMethod.GET, "/usuario/email/{email}").permitAll().anyRequest()
-                .authenticated())
->>>>>>> 0b7ea31644768db8c5c651c6d677129192aaec16:server/src/main/java/br/upe/garanhuns/alexa/controller/config/SecurityConfig.java
+                .requestMatchers(HttpMethod.POST, "/usuario/login").permitAll())
+
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
   }
 
