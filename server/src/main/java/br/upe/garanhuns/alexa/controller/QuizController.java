@@ -47,9 +47,11 @@ public class QuizController {
 
   }
   @GetMapping("/")
-  public ResponseEntity index()  {
-    return "Tá ok";
-  }
+    @ResponseBody
+    String home() {
+        return "Hello, World!";
+    }
+}
 
   @GetMapping("/favicon.ico")
   public ResponseEntity favicon()  {
