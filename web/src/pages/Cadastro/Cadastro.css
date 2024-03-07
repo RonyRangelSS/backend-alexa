@@ -1,0 +1,10 @@
+.imageCadastro{
+    max-width: 30%;
+    max-height: 30%;
+    height: auto;
+  }
+
+.imageDiv{
+  text-align: center;
+  padding-top: 50px;
+}
