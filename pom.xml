@@ -81,21 +81,14 @@
 
 	<build>
 		<plugins>
-				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<version>3.2.3</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>repackage</goal>
-							</goals>
-							<configuration>
-								<mainClass>server/src/main/java/br.upe.garahuns.alexa.AlexaSkillApplication.java</mainClass>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
+			<plugin>
+		            <groupId>org.springframework.boot</groupId>
+		            <artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+                			<mainClass>server.src.java.br.upe.garanhuns.alexa.AlexaSkillApplication.java</mainClass>
+           			 </configuration>
+					
+		        </plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
