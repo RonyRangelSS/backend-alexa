@@ -29,7 +29,8 @@ public class SecurityConfig {
         .authorizeHttpRequests(
             authorize -> authorize.requestMatchers(HttpMethod.POST, "/usuario/cadastro").permitAll()
                 .requestMatchers(HttpMethod.POST, "/usuario/login").permitAll()
-                .requestMatchers(HttpMethod.GET, "/quiz/{nome}/{id}").permitAll().anyRequest()
+                .requestMatchers(HttpMethod.GET, "/quiz/{nome}/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/usuario/email/{email}").permitAll().anyRequest()
                 .authenticated())
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
   }

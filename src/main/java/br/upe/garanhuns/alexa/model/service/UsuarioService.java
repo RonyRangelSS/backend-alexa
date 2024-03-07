@@ -52,6 +52,18 @@ public class UsuarioService {
 
   }
 
+  public Usuario getUsuarioPorEmail(String email) {
+
+    try {
+      Optional<Usuario> usuario = usuarioRepo.findByEmail(email);
+      return usuario.orElse(null);
+    } catch (Exception e) {
+      this.tratarErro(e);
+    }
+    return null;
+
+  }
+
   public CadastroEntidade cadastrarUsuario(UsuarioDTO usuarioDto) {
 
     try {

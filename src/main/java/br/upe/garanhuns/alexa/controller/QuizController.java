@@ -91,6 +91,7 @@ public class QuizController {
   public ResponseEntity inserirPergunta(@RequestBody @Valid QuizDTO quizDto) {
 
     try {
+      this.quizService.inserirPergunta(quizDto);
       return ResponseEntity.status(HttpStatus.CREATED).build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.tratarErro(e));

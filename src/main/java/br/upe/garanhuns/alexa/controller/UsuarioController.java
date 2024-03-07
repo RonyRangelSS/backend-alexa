@@ -53,7 +53,23 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(this.tratarErro(MensagensErro.MSG_NAO_ENCONTRADO));
       }
-      return ResponseEntity.status(HttpStatus.OK).body(usuarioService.getUsuarioPorId(id));
+      return ResponseEntity.status(HttpStatus.OK).body(usuario);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(this.tratarErro(e));
+    }
+
+  }
+
+  @GetMapping("/usuario/email/{email}")
+  public ResponseEntity getUsuarioPorId(@PathVariable String email) {
+
+    try {
+      Usuario usuario = usuarioService.getUsuarioPorEmail(email);
+      if (usuario == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(this.tratarErro(MensagensErro.MSG_NAO_ENCONTRADO));
+      }
+      return ResponseEntity.status(HttpStatus.OK).body(usuario);
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(this.tratarErro(e));
     }
