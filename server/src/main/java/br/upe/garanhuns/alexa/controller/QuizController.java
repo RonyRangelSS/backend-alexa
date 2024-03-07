@@ -51,11 +51,8 @@ public class QuizController {
     String home() {
         return "Hello, World!";
     }
-}
 
-  @GetMapping("/favicon.ico")
-  public ResponseEntity favicon()  {
-  }
+
 
   @GetMapping("/quiz/{id}")
   public ResponseEntity getPerguntaPorId(@PathVariable int id) {
@@ -152,5 +149,5 @@ public class QuizController {
     logger.warn(mensagem);
     return new ErroDTO(new CartoesRapidosException(mensagem));
   }
-
 }
+
