@@ -65,10 +65,7 @@
 		<dependency>
 			<groupId>jakarta.validation</groupId>
 			<artifactId>jakarta.validation-api</artifactId>
-<<<<<<< HEAD:pom.xml
-=======
-			<!--<version>3.1.0-M1</version>-->
->>>>>>> 0b7ea31644768db8c5c651c6d677129192aaec16:server/pom.xml
+			
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
