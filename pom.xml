@@ -91,7 +91,7 @@
 								<goal>repackage</goal>
 							</goals>
 							<configuration>
-								<mainClass>br.upe.garanhuns.alexa.AlexaSkillApplication</mainClass>
+								<mainClass>server/src/main/java/br.upe.garahuns.alexa.AlexaSkillApplication.java</mainClass>
 							</configuration>
 						</execution>
 					</executions>
