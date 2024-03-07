@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class AlexaSkillApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AlexaSkillApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(AlexaSkillApplication.class, args);
+  }
 }

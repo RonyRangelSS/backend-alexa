@@ -56,7 +56,7 @@ public class UsuarioService {
 
     try {
 
-      if (this.usuarioRepo.findByEmail(usuarioDto.email()) != null) {
+      if (this.usuarioRepo.findByEmail(usuarioDto.email()).orElse(null) != null) {
         return CadastroEntidade.ENTIDADE_EXISTENTE;
       }
 
