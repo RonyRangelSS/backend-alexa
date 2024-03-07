@@ -85,7 +85,7 @@
 		            <groupId>org.springframework.boot</groupId>
 		            <artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-                			<mainClass>server.src.java.br.upe.garanhuns.alexa.AlexaSkillApplication.java</mainClass>
+                			<mainClass>server/src/main/java/br/upe/garanhuns/alexa/AlexaSkillApplication.java</mainClass>
            			 </configuration>
 					
 		        </plugin>
