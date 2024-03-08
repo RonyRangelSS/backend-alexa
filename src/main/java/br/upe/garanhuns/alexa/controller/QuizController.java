@@ -30,6 +30,11 @@ public class QuizController {
   private QuizService quizService;
 
   private static final Logger logger = LogManager.getLogger("quiz-controller");
+  
+  @RequestMapping("/")
+  public String home() {
+      return "Deu certo!";
+  }
 
   @GetMapping("/quiz")
   public ResponseEntity getAllQuiz() {
@@ -42,10 +47,6 @@ public class QuizController {
       return ResponseEntity.status(404).build();
     }
 
-  }
-  @RequestMapping("/")
-  public String home() {
-      return "Deu certo!";
   }
 
   @GetMapping("/quiz/{id}")
