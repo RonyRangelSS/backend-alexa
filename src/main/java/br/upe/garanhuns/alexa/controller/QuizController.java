@@ -23,7 +23,7 @@ import br.upe.garanhuns.alexa.model.service.QuizService;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://cartoes-rapidos-64cbd3337889.herokuapp.com/")
 public class QuizController {
 
   @Autowired
