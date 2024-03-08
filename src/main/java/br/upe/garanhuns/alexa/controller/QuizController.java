@@ -31,7 +31,7 @@ public class QuizController {
 
   private static final Logger logger = LogManager.getLogger("quiz-controller");
   
-  @RequestMapping("/")
+  @GetMapping("/")
   public String home() {
       return "Deu certo!";
   }
@@ -131,7 +131,7 @@ public class QuizController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.tratarErro(e));
     }
   }
-  @RequestMapping("/favicon.ico")
+  @GetMapping("/favicon.ico")
   void returnNoFavicon() {
   }
 
