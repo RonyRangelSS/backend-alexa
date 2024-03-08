@@ -43,6 +43,10 @@ public class QuizController {
     }
 
   }
+  @RequestMapping("/")
+  public String home() {
+      return "Deu certo!";
+  }
 
   @GetMapping("/quiz/{id}")
   public ResponseEntity getPerguntaPorId(@PathVariable int id) {
@@ -125,6 +129,9 @@ public class QuizController {
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.tratarErro(e));
     }
+  }
+  @RequestMapping("/favicon.ico")
+  void returnNoFavicon() {
   }
 
   public ErroDTO tratarErro(Exception e) {
