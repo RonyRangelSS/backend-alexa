@@ -1,0 +1,28 @@
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #d9d9d9;
+  }
+  
+  .logo {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .logout-button {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .logout-button svg {
+    margin-left: 5px;
+  }
+
+  .logout-button:hover {
+    color: #0193C2;
+  }
