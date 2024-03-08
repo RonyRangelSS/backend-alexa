@@ -23,17 +23,16 @@ import br.upe.garanhuns.alexa.model.entity.Usuario;
 public class TokenService {
 
   private static final String ISSUER = "usuario-quiz";
-  private static final Algorithm algoritmo = Algorithm.HMAC256(System.getenv("SECRET_KEY"));
   private static final Logger logger = LogManager.getLogger("token-service");
 
   public String gerarToken(Usuario usuario) {
     return JWT.create().withIssuer(ISSUER).withSubject(usuario.getEmail())
         .withClaim("id", usuario.getIdUsuario()).withExpiresAt(gerarTempoExpiracao())
-        .sign(algoritmo);
+        .sign(Algorithm.HMAC256("SECRET"));
   }
 
   public String getSubject(String token) {
-    return JWT.require(algoritmo).withIssuer(ISSUER).build().verify(token).getSubject();
+    return JWT.require(Algorithm.HMAC256("SECRET")).withIssuer(ISSUER).build().verify(token).getSubject();
   }
 
   public Instant gerarTempoExpiracao() {
