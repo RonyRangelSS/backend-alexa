@@ -25,7 +25,7 @@ import br.upe.garanhuns.alexa.model.service.UsuarioService;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "https://cartoes-rapidos-64cbd3337889.herokuapp.com/")
+@CrossOrigin(origins = "https://frontend-api-8e64bc3f1ea9.herokuapp.com/")
 public class UsuarioController {
 
   @Autowired
